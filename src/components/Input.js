@@ -8,6 +8,11 @@ function Input() {
   const [carbs, setCarbs] = useState(0);
   const [calories, setCalories] = useState(0);
 
+  const apply = (cal) => {
+    setCalories(cal);
+    setOpenModal(false);
+  };
+
   const generateNutrition = () => {
     // 10-35% Protein
     setProtein(calories * 0.25);
@@ -61,7 +66,7 @@ function Input() {
           Carbs <span className="text-green-500 font-bold">{carbs}</span> (50%)
         </h1>
       </div>
-      {openModal && <Modal setOpenModal={setOpenModal} />}
+      {openModal && <Modal setOpenModal={setOpenModal} apply={apply} />}
     </div>
   );
 }

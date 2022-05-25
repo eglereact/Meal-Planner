@@ -1,3 +1,4 @@
+import Bmr from "./components/Bmr";
 import Input from "./components/Input";
 import Nav from "./components/Nav";
 
