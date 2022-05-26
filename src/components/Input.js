@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Modal from "./Modal";
+import fruits from "./../data/fruit";
 
 function Input() {
   const [openModal, setOpenModal] = useState(false);
@@ -21,6 +22,7 @@ function Input() {
     // 45-65% Carbohydrates
     setCarbs(calories * 0.5);
   };
+
   return (
     <div className="max-w-6xl mx-auto flex flex-col justify-center items-center">
       <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">
@@ -34,7 +36,7 @@ function Input() {
         <h3 className="">Enter your calories</h3>
         <input
           type="number"
-          value={calories}
+          value={calories.toFixed(2)}
           onChange={(e) => setCalories(e.target.value)}
           className="pl-3 outline-none"
         />
@@ -44,7 +46,7 @@ function Input() {
       </div>
       <button
         onClick={generateNutrition}
-        className="my-5 rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer
+        className="my-10 rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer
        border-b-4 border-l-2 active:border-[#e27065] active:shadow-none shadow-lg bg-gradient-to-tr from-[#FF8377]
         to-[#f36659] border-[#d3665c] text-white"
       >
@@ -56,15 +58,31 @@ function Input() {
       </button>
       <div className="flex flex-col items-center justify-center sm:flex-row sm:space-x-4 text-gray-600">
         <h1 className="bg-purple-100 border border-purple-300 rounded-full px-3 mb-2">
-          Protein <span className="text-purple-500 font-bold">{protein}</span>{" "}
+          Protein{" "}
+          <span className="text-purple-500 font-bold">
+            {protein.toFixed(2)}
+          </span>{" "}
           (25%)
         </h1>
         <h1 className="bg-yellow-100 border border-yellow-300 rounded-full px-3 mb-2">
-          Fat <span className="text-yellow-500 font-bold">{fat}</span> (25%)
+          Fat{" "}
+          <span className="text-yellow-500 font-bold">{fat.toFixed(2)}</span>{" "}
+          (25%)
         </h1>
         <h1 className="bg-green-100 border border-green-300 rounded-full px-3 mb-2 ">
-          Carbs <span className="text-green-500 font-bold">{carbs}</span> (50%)
+          Carbs{" "}
+          <span className="text-green-500 font-bold">{carbs.toFixed(2)}</span>{" "}
+          (50%)
         </h1>
+      </div>
+
+      {/* List of products */}
+      <div>
+        {fruits.map((fruit) => (
+          <p key={fruit.id}>
+            {fruit.name} | {fruit.cal}
+          </p>
+        ))}
       </div>
       {openModal && <Modal setOpenModal={setOpenModal} apply={apply} />}
     </div>

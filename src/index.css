@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .label {
+    @apply text-lg font-medium text-gray-800 w-1/2;
+  }
+
+  .input-modal {
+    @apply bg-blue-100 rounded-sm outline-none ml-3 w-[200px] lg:w-[300px] pl-2 py-1;
+  }
+
+  .box-modal {
+    @apply flex items-center space-x-2 border-b border-gray-100 py-3;
+  }
+  .btn {
+    @apply w-full bg-gray-600 text-white rounded-lg py-2 hover:bg-[#FF8377] transition duration-200 ease-in-out 
+    font-bold;
+  }
+}
