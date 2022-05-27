@@ -1,13 +1,13 @@
 import { useState } from "react";
 import Modal from "./Modal";
 import fruits from "./../data/fruit";
+import MealList from "./MealList";
 
 function Input() {
   const [openModal, setOpenModal] = useState(false);
-  const [protein, setProtein] = useState(0);
-  const [fat, setFat] = useState(0);
-  const [carbs, setCarbs] = useState(0);
   const [calories, setCalories] = useState(0);
+  const [mealData, setMealData] = useState(null);
+  const [error, setError] = useState("");
 
   const apply = (cal) => {
     setCalories(cal);
@@ -15,12 +15,26 @@ function Input() {
   };
 
   const generateNutrition = () => {
-    // 10-35% Protein
-    setProtein(calories * 0.25);
-    // 20-35% Fat
-    setFat(calories * 0.25);
-    // 45-65% Carbohydrates
-    setCarbs(calories * 0.5);
+    if (calories === 0) {
+      setError("Please enter the calories");
+    } else {
+      getMealData();
+      setError("");
+    }
+  };
+
+  const getMealData = () => {
+    fetch(
+      `https://api.spoonacular.com/mealplanner/generate?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&timeFrame=day&targetCalories=${calories}&diet=vegetarian`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setMealData(data);
+        console.log(data);
+      })
+      .catch(() => {
+        console.log("error");
+      });
   };
 
   return (
@@ -36,10 +50,11 @@ function Input() {
         <h3 className="">Enter your calories</h3>
         <input
           type="number"
-          value={calories.toFixed(2)}
+          value={calories}
           onChange={(e) => setCalories(e.target.value)}
           className="pl-3 outline-none"
         />
+        <p>{error && error}</p>
         <button onClick={() => setOpenModal(true)} className="text-[#FF8377]">
           Not Sure?
         </button>
@@ -56,34 +71,10 @@ function Input() {
         ></span>
         <span className="relative">Generate</span>
       </button>
-      <div className="flex flex-col items-center justify-center sm:flex-row sm:space-x-4 text-gray-600">
-        <h1 className="bg-purple-100 border border-purple-300 rounded-full px-3 mb-2">
-          Protein{" "}
-          <span className="text-purple-500 font-bold">
-            {protein.toFixed(2)}
-          </span>{" "}
-          (25%)
-        </h1>
-        <h1 className="bg-yellow-100 border border-yellow-300 rounded-full px-3 mb-2">
-          Fat{" "}
-          <span className="text-yellow-500 font-bold">{fat.toFixed(2)}</span>{" "}
-          (25%)
-        </h1>
-        <h1 className="bg-green-100 border border-green-300 rounded-full px-3 mb-2 ">
-          Carbs{" "}
-          <span className="text-green-500 font-bold">{carbs.toFixed(2)}</span>{" "}
-          (50%)
-        </h1>
-      </div>
 
-      {/* List of products */}
-      <div>
-        {fruits.map((fruit) => (
-          <p key={fruit.id}>
-            {fruit.name} | {fruit.cal}
-          </p>
-        ))}
-      </div>
+      {/* List of meals */}
+      {mealData && <MealList mealData={mealData} />}
+
       {openModal && <Modal setOpenModal={setOpenModal} apply={apply} />}
     </div>
   );
