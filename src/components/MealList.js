@@ -1,12 +1,12 @@
 import Meal from "./Meal";
 
-function MealList({ mealData }) {
+function MealList({ mealData, day }) {
   const nutrients = mealData.nutrients;
   return (
-    <main className="w-full">
+    <main className="w-full my-5">
       <section>
         <h1 className="text-center text-3xl text-gray-600 font-bold mb-3">
-          Meal List
+          Meal List for {day}
         </h1>
         <div className="flex flex-col items-center justify-center sm:flex-row sm:space-x-4 text-gray-600">
           <h1 className="bg-pink-100 border border-pink-300 rounded-full px-3 mb-2">

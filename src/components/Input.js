@@ -1,13 +1,20 @@
 import { useState } from "react";
 import Modal from "./Modal";
-import fruits from "./../data/fruit";
 import MealList from "./MealList";
+import dateFormat, { masks } from "dateformat";
 
 function Input() {
   const [openModal, setOpenModal] = useState(false);
   const [calories, setCalories] = useState(0);
-  const [mealData, setMealData] = useState(null);
+  const [mealDataM, setMealDataM] = useState(null);
+  const [mealDataTu, setMealDataTu] = useState(null);
+  const [mealDataW, setMealDataW] = useState(null);
+  const [mealDataTr, setMealDataTr] = useState(null);
+  const [mealDataF, setMealDataF] = useState(null);
+  const [mealDataSa, setMealDataSa] = useState(null);
+  const [mealDataSu, setMealDataSu] = useState(null);
   const [error, setError] = useState("");
+  const now = new Date();
 
   const apply = (cal) => {
     setCalories(cal);
@@ -25,11 +32,17 @@ function Input() {
 
   const getMealData = () => {
     fetch(
-      `https://api.spoonacular.com/mealplanner/generate?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&timeFrame=day&targetCalories=${calories}&diet=vegetarian`
+      `https://api.spoonacular.com/mealplanner/generate?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&timeFrame=week&targetCalories=${calories}&diet=vegetarian`
     )
       .then((response) => response.json())
       .then((data) => {
-        setMealData(data);
+        setMealDataM(data.week.monday);
+        setMealDataTu(data.week.tuesday);
+        setMealDataW(data.week.wednesday);
+        setMealDataTr(data.week.thursday);
+        setMealDataF(data.week.friday);
+        setMealDataSa(data.week.saturday);
+        setMealDataSu(data.week.sunday);
         console.log(data);
       })
       .catch(() => {
@@ -37,11 +50,21 @@ function Input() {
       });
   };
 
+  function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
   return (
     <div className="max-w-6xl mx-auto flex flex-col justify-center items-center">
       <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">
-        Your meal products planner
+        Your meal planner for a week
       </h1>
+      <h3>
+        From {dateFormat(now, "dddd, mmmm dS, yyyy")} to{" "}
+        {dateFormat(addDays(now, 7), "dddd, mmmm dS, yyyy")}
+      </h3>
       <p className="text-gray-600 my-5 text-center">
         The program counts how much your need carbs, fat and protein and offer
         you some products to choose from.
@@ -73,8 +96,13 @@ function Input() {
       </button>
 
       {/* List of meals */}
-      {mealData && <MealList mealData={mealData} />}
-
+      {mealDataM && <MealList mealData={mealDataM} day="Monday" />}
+      {mealDataTu && <MealList mealData={mealDataTu} day="Tuesday" />}
+      {mealDataW && <MealList mealData={mealDataW} day="Wednesday" />}
+      {mealDataTr && <MealList mealData={mealDataTr} day="Thursday" />}
+      {mealDataF && <MealList mealData={mealDataF} day="Sunday" />}
+      {mealDataSa && <MealList mealData={mealDataSa} day="Saturday" />}
+      {mealDataSu && <MealList mealData={mealDataSu} day="Sunday" />}
       {openModal && <Modal setOpenModal={setOpenModal} apply={apply} />}
     </div>
   );

@@ -5,20 +5,23 @@ import { GiMeal } from "react-icons/gi";
 function Meal({ meal }) {
   const { title, sourceUrl, servings, readyInMinutes } = meal;
   const [imageUrl, setImageUrl] = useState("");
+  const [dish, setDish] = useState(null);
 
-  //Request limit 150 per day
-  useEffect(() => {
-    fetch(
-      `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&includeNutrition=false`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setImageUrl(data.image);
-      })
-      .catch(() => {
-        console.log("error");
-      });
-  }, [meal.id]);
+  // Request limit 150 per day
+  // useEffect(() => {
+  //   fetch(
+  //     `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&includeNutrition=false`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setImageUrl(data.image);
+  //       setDish(data);
+  //       console.log(data);
+  //     })
+  //     .catch(() => {
+  //       console.log("error");
+  //     });
+  // }, [meal.id]);
 
   return (
     <div className="w-full bg-white rounded-lg shadow-md">
