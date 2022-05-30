@@ -1,18 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import MealList from "./MealList";
-import dateFormat, { masks } from "dateformat";
+import dateFormat from "dateformat";
 
 function Input() {
   const [openModal, setOpenModal] = useState(false);
   const [calories, setCalories] = useState(0);
-  const [mealDataM, setMealDataM] = useState(null);
-  const [mealDataTu, setMealDataTu] = useState(null);
-  const [mealDataW, setMealDataW] = useState(null);
-  const [mealDataTr, setMealDataTr] = useState(null);
-  const [mealDataF, setMealDataF] = useState(null);
-  const [mealDataSa, setMealDataSa] = useState(null);
-  const [mealDataSu, setMealDataSu] = useState(null);
+  const [mealDataM, setMealDataM] = useState(() => {
+    const localData = localStorage.getItem("mealMonday");
+    return localData ? JSON.parse(localData) : null;
+  });
+  const [mealDataTu, setMealDataTu] = useState(() => {
+    const localData = localStorage.getItem("mealTuesday");
+    return localData ? JSON.parse(localData) : null;
+  });
+  const [mealDataW, setMealDataW] = useState(() => {
+    const localData = localStorage.getItem("mealWednesday");
+    return localData ? JSON.parse(localData) : null;
+  });
+  const [mealDataTr, setMealDataTr] = useState(() => {
+    const localData = localStorage.getItem("mealThursday");
+    return localData ? JSON.parse(localData) : null;
+  });
+  const [mealDataF, setMealDataF] = useState(() => {
+    const localData = localStorage.getItem("mealFriday");
+    return localData ? JSON.parse(localData) : null;
+  });
+  const [mealDataSa, setMealDataSa] = useState(() => {
+    const localData = localStorage.getItem("mealSaturday");
+    return localData ? JSON.parse(localData) : null;
+  });
+  const [mealDataSu, setMealDataSu] = useState(() => {
+    const localData = localStorage.getItem("mealSunday");
+    return localData ? JSON.parse(localData) : null;
+  });
   const [error, setError] = useState("");
   const now = new Date();
 
@@ -30,6 +51,25 @@ function Input() {
     }
   };
 
+  useEffect(() => {
+    // storing meals to local storage
+    localStorage.setItem("mealMonday", JSON.stringify(mealDataM));
+    localStorage.setItem("mealTuesday", JSON.stringify(mealDataTu));
+    localStorage.setItem("mealWednesday", JSON.stringify(mealDataW));
+    localStorage.setItem("mealThursday", JSON.stringify(mealDataTr));
+    localStorage.setItem("mealFriday", JSON.stringify(mealDataF));
+    localStorage.setItem("mealSaturday", JSON.stringify(mealDataSa));
+    localStorage.setItem("mealSunday", JSON.stringify(mealDataSu));
+  }, [
+    mealDataM,
+    mealDataTu,
+    mealDataW,
+    mealDataTr,
+    mealDataF,
+    mealDataSa,
+    mealDataSu,
+  ]);
+
   const getMealData = () => {
     fetch(
       `https://api.spoonacular.com/mealplanner/generate?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&timeFrame=week&targetCalories=${calories}&diet=vegetarian`
@@ -43,13 +83,13 @@ function Input() {
         setMealDataF(data.week.friday);
         setMealDataSa(data.week.saturday);
         setMealDataSu(data.week.sunday);
-        console.log(data);
       })
       .catch(() => {
         console.log("error");
       });
   };
 
+  //Add number of days to current day
   function addDays(date, days) {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -58,16 +98,16 @@ function Input() {
 
   return (
     <div className="max-w-6xl mx-auto flex flex-col justify-center items-center">
-      <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">
+      <h1 className="text-xl lg:text-3xl font-bold text-gray-800 ">
         Your meal planner for a week
       </h1>
-      <h3>
-        From {dateFormat(now, "dddd, mmmm dS, yyyy")} to{" "}
-        {dateFormat(addDays(now, 7), "dddd, mmmm dS, yyyy")}
+      <h3 className="text-sm text-gray-600">
+        From {dateFormat(now, "yyyy mmmm dS")} to{" "}
+        {dateFormat(addDays(now, 7), "yyyy mmmm dS")}
       </h3>
       <p className="text-gray-600 my-5 text-center">
         The program counts how much your need carbs, fat and protein and offer
-        you some products to choose from.
+        you some vegetarian meals to choose from.
       </p>
       <div className="flex flex-col sm:flex-row items-center text-gray-800 space-x-2">
         <h3 className="">Enter your calories</h3>
@@ -103,6 +143,7 @@ function Input() {
       {mealDataF && <MealList mealData={mealDataF} day="Sunday" />}
       {mealDataSa && <MealList mealData={mealDataSa} day="Saturday" />}
       {mealDataSu && <MealList mealData={mealDataSu} day="Sunday" />}
+
       {openModal && <Modal setOpenModal={setOpenModal} apply={apply} />}
     </div>
   );

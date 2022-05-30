@@ -5,7 +5,9 @@ import { GiMeal } from "react-icons/gi";
 function Meal({ meal }) {
   const { title, sourceUrl, servings, readyInMinutes } = meal;
   const [imageUrl, setImageUrl] = useState("");
-  const [dish, setDish] = useState(null);
+  const [types, setTypes] = useState([]);
+  const [veryHealthy, setVeryHealthy] = useState(false);
+  const [ingridients, setIngridients] = useState([]);
 
   // Request limit 150 per day
   // useEffect(() => {
@@ -15,17 +17,19 @@ function Meal({ meal }) {
   //     .then((response) => response.json())
   //     .then((data) => {
   //       setImageUrl(data.image);
-  //       setDish(data);
+  //       setTypes(data.dishTypes);
+  //       setVeryHealthy(data.veryHealthy);
+  //       setIngridients(data.extendedIngredients);
   //       console.log(data);
   //     })
   //     .catch(() => {
   //       console.log("error");
   //     });
-  // }, [meal.id]);
+  // }, []);
 
   return (
     <div className="w-full bg-white rounded-lg shadow-md">
-      <h1 className="text-center text-xl text-gray-600 py-2  font-bold">
+      <h1 className="text-center text-xl text-gray-600 py-2 h-20  font-bold">
         {title}
       </h1>
       <img src={imageUrl || mealImg} alt={title} />
@@ -36,6 +40,19 @@ function Meal({ meal }) {
         <p>
           Ready in: <span className="font-bold">{readyInMinutes}</span> min
         </p>
+        <div>
+          Dish Type:{" "}
+          {types.map((type) => (
+            <p>{type}</p>
+          ))}
+        </div>
+        <p>veryHealthy : {veryHealthy}</p>
+        <div>
+          ingridients:{" "}
+          {ingridients.map((ing) => (
+            <p className="capitalize">{ing.name}</p>
+          ))}
+        </div>
         <a
           className="flex items-center text-lg  font-medium hover:text-[#FF8377]"
           href={sourceUrl}
