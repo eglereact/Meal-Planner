@@ -3,29 +3,24 @@ import mealImg from "./../images/meal.svg";
 import { GiMeal } from "react-icons/gi";
 
 function Meal({ meal }) {
-  const { title, sourceUrl, servings, readyInMinutes } = meal;
+  const { title, sourceUrl, servings, readyInMinutes, imageType, id } = meal;
   const [imageUrl, setImageUrl] = useState("");
   const [types, setTypes] = useState([]);
-  const [veryHealthy, setVeryHealthy] = useState(false);
   const [ingridients, setIngridients] = useState([]);
 
   // Request limit 150 per day
-  // useEffect(() => {
-  //   fetch(
-  //     `https://api.spoonacular.com/recipes/${meal.id}/information?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&includeNutrition=false`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setImageUrl(data.image);
-  //       setTypes(data.dishTypes);
-  //       setVeryHealthy(data.veryHealthy);
-  //       setIngridients(data.extendedIngredients);
-  //       console.log(data);
-  //     })
-  //     .catch(() => {
-  //       console.log("error");
-  //     });
-  // }, []);
+  useEffect(() => {
+    fetch(`https://spoonacular.com/recipeImages/${id}-556x370.${imageType}`)
+      .then((data) => {
+        setImageUrl(data.url);
+        // setTypes(data.dishTypes);
+        // setIngridients(data.extendedIngredients);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
 
   return (
     <div className="w-full bg-white rounded-lg shadow-md">
@@ -40,21 +35,26 @@ function Meal({ meal }) {
         <p>
           Ready in: <span className="font-bold">{readyInMinutes}</span> min
         </p>
-        <div>
-          Dish Type:{" "}
-          {types.map((type) => (
-            <p>{type}</p>
+
+        <div className="flex space-x-1 flex-wrap capitalize text-gray-800">
+          <span className="mr-2"> Dish Type:</span>
+          {types.map((type, index) => (
+            <p className="font-medium" key={index}>
+              {type} <span className="text-[#FF8377] font-bold">|</span>
+            </p>
           ))}
         </div>
-        <p>veryHealthy : {veryHealthy}</p>
-        <div>
-          ingridients:{" "}
-          {ingridients.map((ing) => (
-            <p className="capitalize">{ing.name}</p>
+
+        <div className="flex space-x-1 flex-wrap capitalize text-gray-800">
+          <span className="mr-2">Ingridients:</span>
+          {ingridients.map((ing, index) => (
+            <p className="font-medium" key={index}>
+              {ing.name} <span className="text-[#FF8377] font-bold">|</span>
+            </p>
           ))}
         </div>
         <a
-          className="flex items-center text-lg  font-medium hover:text-[#FF8377]"
+          className="flex items-center text-lg mt-3  font-medium hover:text-[#FF8377]"
           href={sourceUrl}
         >
           Go to recipe

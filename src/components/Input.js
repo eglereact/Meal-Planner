@@ -83,6 +83,7 @@ function Input() {
         setMealDataF(data.week.friday);
         setMealDataSa(data.week.saturday);
         setMealDataSu(data.week.sunday);
+        console.log(data);
       })
       .catch(() => {
         console.log("error");
@@ -109,6 +110,14 @@ function Input() {
         The program counts how much your need carbs, fat and protein and offer
         you some vegetarian meals to choose from.
       </p>
+      <p
+        className={
+          error &&
+          `bg-red-100 border border-red-300 px-4 my-2 rounded-lg text-red-600`
+        }
+      >
+        {error && error}
+      </p>
       <div className="flex flex-col sm:flex-row items-center text-gray-800 space-x-2">
         <h3 className="">Enter your calories</h3>
         <input
@@ -117,7 +126,6 @@ function Input() {
           onChange={(e) => setCalories(e.target.value)}
           className="pl-3 outline-none"
         />
-        <p>{error && error}</p>
         <button onClick={() => setOpenModal(true)} className="text-[#FF8377]">
           Not Sure?
         </button>
