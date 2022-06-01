@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer components {
+  body {
+    @apply bg-gray-100;
+  }
+
   .label {
     @apply text-lg font-medium text-gray-800 w-1/2;
   }

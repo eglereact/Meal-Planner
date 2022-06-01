@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import MealList from "./MealList";
 import dateFormat from "dateformat";
+import { dietTypes } from "./../data.js";
 
 function Input() {
   const [openModal, setOpenModal] = useState(false);
@@ -80,6 +81,8 @@ function Input() {
     mealDataF,
     mealDataSa,
     mealDataSu,
+    calories,
+    diet,
   ]);
 
   const getMealData = () => {
@@ -110,11 +113,11 @@ function Input() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto flex flex-col justify-center items-center">
-      <h1 className="text-xl lg:text-3xl font-bold text-gray-800 ">
+    <div className="max-w-6xl mx-auto flex flex-col justify-center items-center ">
+      <h1 className="text-xl lg:text-3xl font-bold text-gray-800 text-center">
         Your meal planner for a week
       </h1>
-      <h3 className="text-sm text-gray-600">
+      <h3 className="text-sm text-gray-600 text-center">
         From {dateFormat(now, "yyyy mmmm dS")} to{" "}
         {dateFormat(addDays(now, 7), "yyyy mmmm dS")}
       </h3>
@@ -143,14 +146,14 @@ function Input() {
         </button>
       </div>
       {/* Type of diet */}
-      <div className="space-x-4 mt-5">
+      <div className="space-x-4 mt-5 flex flex-wrap items-center justify-center">
         {dietTypes.map((type) => (
           <button
             key={type.id}
             onClick={() => setDiet(type.type)}
             className={`${
               diet === type.type && "bg-[#FF8377] font-bold text-white"
-            }  capitalize text-gray-800 border-2 px-3 py-1 bg-white rounded-lg border-gray-300`}
+            }  capitalize text-gray-800 border-2 px-3 py-1 hover:bg-white hover:text-gray-800 rounded-lg mt-1 border-gray-300`}
           >
             {type.type}
           </button>
@@ -184,11 +187,3 @@ function Input() {
 }
 
 export default Input;
-
-const dietTypes = [
-  { id: 1, type: "vegetarian" },
-  { id: 2, type: "vegan" },
-  { id: 3, type: "ketogenic" },
-  { id: 4, type: "paleo" },
-  { id: 5, type: "gluten-free" },
-];

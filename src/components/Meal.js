@@ -5,10 +5,9 @@ import { GiMeal } from "react-icons/gi";
 function Meal({ meal }) {
   const { title, sourceUrl, servings, readyInMinutes, imageType, id } = meal;
   const [imageUrl, setImageUrl] = useState("");
-  const [types, setTypes] = useState([]);
-  const [ingridients, setIngridients] = useState([]);
+  // const [types, setTypes] = useState([]);
+  // const [ingridients, setIngridients] = useState([]);
 
-  // Request limit 150 per day
   useEffect(() => {
     fetch(`https://spoonacular.com/recipeImages/${id}-556x370.${imageType}`)
       .then((data) => {
@@ -17,8 +16,9 @@ function Meal({ meal }) {
       .catch((error) => {
         console.log(error);
       });
-  }, [id]);
+  }, [id, imageType]);
 
+  // Request limit 150 per day.
   // useEffect(() => {
   //   fetch(
   //     `https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&includeNutrition=false`
@@ -35,7 +35,7 @@ function Meal({ meal }) {
   // }, [id]);
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-md">
+    <div className="w-full bg-white rounded-lg shadow-md mt-2">
       <h1 className="text-center text-xl text-gray-600 py-2 h-20  font-bold">
         {title}
       </h1>
@@ -47,17 +47,17 @@ function Meal({ meal }) {
         <p>
           Ready in: <span className="font-bold">{readyInMinutes}</span> min
         </p>
-        {/* 
-        <div className="flex space-x-1 flex-wrap capitalize text-gray-800">
+
+        {/* <div className="flex space-x-1 flex-wrap capitalize text-gray-800">
           <span className="mr-2"> Dish Type:</span>
           {types.map((type, index) => (
             <p className="font-medium" key={index}>
               {type} <span className="text-[#FF8377] font-bold">|</span>
             </p>
           ))}
-        </div> */}
+        </div>
 
-        {/* <div className="flex space-x-1 flex-wrap capitalize text-gray-800">
+        <div className="flex space-x-1 flex-wrap capitalize text-gray-800">
           <span className="mr-2">Ingridients:</span>
           {ingridients.map((ing, index) => (
             <p className="font-medium" key={index}>

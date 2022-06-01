@@ -33,7 +33,7 @@ function MealList({ mealData, day }) {
           </h1>
         </div>
       </section>
-      <section className="flex flex-col sm:flex-row space-x-3 my-5">
+      <section className="flex flex-col sm:flex-row sm:space-x-3 my-5 mx-1">
         {mealData.meals.map((meal) => (
           <Meal key={meal.id} meal={meal} />
         ))}
