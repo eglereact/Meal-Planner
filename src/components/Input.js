@@ -5,7 +5,10 @@ import dateFormat from "dateformat";
 
 function Input() {
   const [openModal, setOpenModal] = useState(false);
-  const [calories, setCalories] = useState(0);
+  const [calories, setCalories] = useState(() => {
+    const localData = localStorage.getItem("calories");
+    return localData ? JSON.parse(localData) : 0;
+  });
   const [mealDataM, setMealDataM] = useState(() => {
     const localData = localStorage.getItem("mealMonday");
     return localData ? JSON.parse(localData) : null;
@@ -35,7 +38,14 @@ function Input() {
     return localData ? JSON.parse(localData) : null;
   });
   const [error, setError] = useState("");
+  const [diet, setDiet] = useState(() => {
+    const localData = localStorage.getItem("diet");
+    return localData ? JSON.parse(localData) : "";
+  });
+
   const now = new Date();
+
+  console.log(diet);
 
   const apply = (cal) => {
     setCalories(cal);
@@ -60,6 +70,8 @@ function Input() {
     localStorage.setItem("mealFriday", JSON.stringify(mealDataF));
     localStorage.setItem("mealSaturday", JSON.stringify(mealDataSa));
     localStorage.setItem("mealSunday", JSON.stringify(mealDataSu));
+    localStorage.setItem("calories", JSON.stringify(calories));
+    localStorage.setItem("diet", JSON.stringify(diet));
   }, [
     mealDataM,
     mealDataTu,
@@ -72,7 +84,7 @@ function Input() {
 
   const getMealData = () => {
     fetch(
-      `https://api.spoonacular.com/mealplanner/generate?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&timeFrame=week&targetCalories=${calories}&diet=vegetarian`
+      `https://api.spoonacular.com/mealplanner/generate?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&timeFrame=week&targetCalories=${calories}&diet=${diet}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -130,6 +142,20 @@ function Input() {
           Not Sure?
         </button>
       </div>
+      {/* Type of diet */}
+      <div className="space-x-4 mt-5">
+        {dietTypes.map((type) => (
+          <button
+            key={type.id}
+            onClick={() => setDiet(type.type)}
+            className={`${
+              diet === type.type && "bg-[#FF8377] font-bold text-white"
+            }  capitalize text-gray-800 border-2 px-3 py-1 bg-white rounded-lg border-gray-300`}
+          >
+            {type.type}
+          </button>
+        ))}
+      </div>
       <button
         onClick={generateNutrition}
         className="my-10 rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer
@@ -158,3 +184,11 @@ function Input() {
 }
 
 export default Input;
+
+const dietTypes = [
+  { id: 1, type: "vegetarian" },
+  { id: 2, type: "vegan" },
+  { id: 3, type: "ketogenic" },
+  { id: 4, type: "paleo" },
+  { id: 5, type: "gluten-free" },
+];

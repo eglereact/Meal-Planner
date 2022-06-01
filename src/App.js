@@ -4,7 +4,7 @@ import Nav from "./components/Nav";
 
 function App() {
   return (
-    <div className="bg-gray-100 sm:h-screen">
+    <div className="bg-gray-100 ">
       <Nav />
       <Input />
     </div>

@@ -36,7 +36,7 @@ function Bmr({ apply }) {
 
       setBmr(bmr);
       let calories = bmr * activity;
-      setCalories(calories);
+      setCalories(calories.toFixed(0));
     }
   };
 
@@ -134,6 +134,7 @@ function Bmr({ apply }) {
               Calculate
             </button>
             <button
+              disabled={calories === 0}
               type="button"
               onClick={() => apply(calories)}
               className="btn"
@@ -143,9 +144,7 @@ function Bmr({ apply }) {
           </div>
           <h1 className="text-center text-2xl">
             Calories :{" "}
-            <span className="font-bold text-gray-800">
-              {calories.toFixed(2)}
-            </span>
+            <span className="font-bold text-gray-800">{calories}</span>
           </h1>
         </div>
       </div>

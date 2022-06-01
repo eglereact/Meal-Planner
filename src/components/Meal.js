@@ -13,14 +13,26 @@ function Meal({ meal }) {
     fetch(`https://spoonacular.com/recipeImages/${id}-556x370.${imageType}`)
       .then((data) => {
         setImageUrl(data.url);
-        // setTypes(data.dishTypes);
-        // setIngridients(data.extendedIngredients);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [id]);
+
+  // useEffect(() => {
+  //   fetch(
+  //     `https://api.spoonacular.com/recipes/${id}/information?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&includeNutrition=false`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setIngridients(data.extendedIngredients);
+  //       setTypes(data.dishTypes);
+  //       console.log(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [id]);
 
   return (
     <div className="w-full bg-white rounded-lg shadow-md">
@@ -35,7 +47,7 @@ function Meal({ meal }) {
         <p>
           Ready in: <span className="font-bold">{readyInMinutes}</span> min
         </p>
-
+        {/* 
         <div className="flex space-x-1 flex-wrap capitalize text-gray-800">
           <span className="mr-2"> Dish Type:</span>
           {types.map((type, index) => (
@@ -43,16 +55,16 @@ function Meal({ meal }) {
               {type} <span className="text-[#FF8377] font-bold">|</span>
             </p>
           ))}
-        </div>
+        </div> */}
 
-        <div className="flex space-x-1 flex-wrap capitalize text-gray-800">
+        {/* <div className="flex space-x-1 flex-wrap capitalize text-gray-800">
           <span className="mr-2">Ingridients:</span>
           {ingridients.map((ing, index) => (
             <p className="font-medium" key={index}>
               {ing.name} <span className="text-[#FF8377] font-bold">|</span>
             </p>
           ))}
-        </div>
+        </div> */}
         <a
           className="flex items-center text-lg mt-3  font-medium hover:text-[#FF8377]"
           href={sourceUrl}
