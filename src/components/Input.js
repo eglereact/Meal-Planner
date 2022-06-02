@@ -3,46 +3,39 @@ import Modal from "./Modal";
 import MealList from "./MealList";
 import dateFormat from "dateformat";
 import { dietTypes } from "./../data.js";
+import {
+  addItemToLocalStorage,
+  getItemFromLocalStorage,
+} from "./../utils/localStorage";
 
 function Input() {
   const [openModal, setOpenModal] = useState(false);
-  const [calories, setCalories] = useState(() => {
-    const localData = localStorage.getItem("calories");
-    return localData ? JSON.parse(localData) : 0;
-  });
-  const [mealDataM, setMealDataM] = useState(() => {
-    const localData = localStorage.getItem("mealMonday");
-    return localData ? JSON.parse(localData) : null;
-  });
-  const [mealDataTu, setMealDataTu] = useState(() => {
-    const localData = localStorage.getItem("mealTuesday");
-    return localData ? JSON.parse(localData) : null;
-  });
-  const [mealDataW, setMealDataW] = useState(() => {
-    const localData = localStorage.getItem("mealWednesday");
-    return localData ? JSON.parse(localData) : null;
-  });
-  const [mealDataTr, setMealDataTr] = useState(() => {
-    const localData = localStorage.getItem("mealThursday");
-    return localData ? JSON.parse(localData) : null;
-  });
-  const [mealDataF, setMealDataF] = useState(() => {
-    const localData = localStorage.getItem("mealFriday");
-    return localData ? JSON.parse(localData) : null;
-  });
-  const [mealDataSa, setMealDataSa] = useState(() => {
-    const localData = localStorage.getItem("mealSaturday");
-    return localData ? JSON.parse(localData) : null;
-  });
-  const [mealDataSu, setMealDataSu] = useState(() => {
-    const localData = localStorage.getItem("mealSunday");
-    return localData ? JSON.parse(localData) : null;
-  });
+  const [calories, setCalories] = useState(
+    getItemFromLocalStorage("calories", 0)
+  );
+  const [mealDataM, setMealDataM] = useState(
+    getItemFromLocalStorage("mealMonday", null)
+  );
+  const [mealDataTu, setMealDataTu] = useState(
+    getItemFromLocalStorage("mealTuesday", null)
+  );
+  const [mealDataW, setMealDataW] = useState(
+    getItemFromLocalStorage("mealWednesday", null)
+  );
+  const [mealDataTr, setMealDataTr] = useState(
+    getItemFromLocalStorage("mealThursday", null)
+  );
+  const [mealDataF, setMealDataF] = useState(
+    getItemFromLocalStorage("mealFriday", null)
+  );
+  const [mealDataSa, setMealDataSa] = useState(
+    getItemFromLocalStorage("mealSaturday", null)
+  );
+  const [mealDataSu, setMealDataSu] = useState(
+    getItemFromLocalStorage("mealSunday", null)
+  );
   const [error, setError] = useState("");
-  const [diet, setDiet] = useState(() => {
-    const localData = localStorage.getItem("diet");
-    return localData ? JSON.parse(localData) : "";
-  });
+  const [diet, setDiet] = useState(getItemFromLocalStorage("diet", ""));
 
   const now = new Date();
 
@@ -64,15 +57,15 @@ function Input() {
 
   useEffect(() => {
     // storing meals to local storage
-    localStorage.setItem("mealMonday", JSON.stringify(mealDataM));
-    localStorage.setItem("mealTuesday", JSON.stringify(mealDataTu));
-    localStorage.setItem("mealWednesday", JSON.stringify(mealDataW));
-    localStorage.setItem("mealThursday", JSON.stringify(mealDataTr));
-    localStorage.setItem("mealFriday", JSON.stringify(mealDataF));
-    localStorage.setItem("mealSaturday", JSON.stringify(mealDataSa));
-    localStorage.setItem("mealSunday", JSON.stringify(mealDataSu));
-    localStorage.setItem("calories", JSON.stringify(calories));
-    localStorage.setItem("diet", JSON.stringify(diet));
+    addItemToLocalStorage("mealMonday", mealDataM);
+    addItemToLocalStorage("mealTuesday", mealDataTu);
+    addItemToLocalStorage("mealWednesday", mealDataW);
+    addItemToLocalStorage("mealThursday", mealDataTr);
+    addItemToLocalStorage("mealFriday", mealDataF);
+    addItemToLocalStorage("mealSaturday", mealDataSa);
+    addItemToLocalStorage("mealSunday", mealDataSu);
+    addItemToLocalStorage("calories", calories);
+    addItemToLocalStorage("diet", diet);
   }, [
     mealDataM,
     mealDataTu,
