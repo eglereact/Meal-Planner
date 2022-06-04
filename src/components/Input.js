@@ -114,9 +114,12 @@ function Input() {
         From {dateFormat(now, "yyyy mmmm dS")} to{" "}
         {dateFormat(addDays(now, 7), "yyyy mmmm dS")}
       </h3>
-      <p className="text-gray-600 my-5 text-center">
+      <p className="text-gray-600 mt-5 text-center">
         The program counts how much your need carbs, fat and protein and offer
-        you some vegetarian meals to choose from.
+        you some diets to choose from.
+      </p>
+      <p className="text-gray-600 mb-5 text-center">
+        Enter calories, choose your diet and press generate.
       </p>
       <p
         className={
